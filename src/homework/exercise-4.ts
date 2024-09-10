@@ -1,4 +1,3 @@
-
 /*
 Опишіть клас таким чином, щоб він міг працювати з динамічними типами данних. Для цього використайте generics
 
@@ -21,42 +20,41 @@ interface IUser {
   name: string
 }
 
-class Collection {
-  private elements = []
+type insertPlace = 'append' | 'prepend'
 
-  constructor (elements = []) {
+class Collection<T> {
+  constructor(private elements: T[] = []) {
     this.elements = elements
   }
 
-  get () {
+  get(): T[] {
     return this.elements
   }
 
-  add (el, type) {
-    // ...
+  add(el: T, type: insertPlace = 'append'): void {
+    type === 'append' 
+      ? this.elements.push(el) 
+      : this.elements.unshift(el)
   }
 
-  contains (predicate) {
-    // ...
+  contains(predicate: (el: T) => boolean): boolean {
+    return this.elements.some(predicate)
   }
 
-  delete (predicate) {
-    // ...
+  delete(predicate: (el: T) => boolean): void {
+    this.elements = this.elements.filter(predicate)
   }
 }
 
-const stringCollection = new Collection()
+const stringCollection = new Collection<string>()
 stringCollection.add('Hello, World!')
-stringCollection.contains(el => el === 'Hello, TS')
+stringCollection.contains((el) => el === 'Hello, TS')
 
 const strings = stringCollection.get()
 
-const userCollection = new Collection()
+const userCollection = new Collection<IUser>()
 userCollection.add({ id: 1, name: 'Viktor' })
-userCollection.delete(el => el.id === 1)
+userCollection.delete((el) => el.id === 1)
 const users = userCollection.get()
 
-export {
-  strings,
-  users
-}
+export { strings, users }
