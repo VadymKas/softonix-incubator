@@ -14,3 +14,16 @@ export const arrayHandler = (num) => {
 const array = [1, 2, 3, 4, 5]
 
 console.log(array)
+
+const promisesChain = (arr) =>
+  arr.reduce((promise, num) => {
+    return promise
+      .then(() => arrayHandler(num))
+      .then(console.log)
+      .catch((err) => {
+        throw err;
+      });
+  }, Promise.resolve());
+
+  promisesChain(array);
+  
