@@ -2,7 +2,7 @@
 Очікується, що C буде або true, або false, тоді як T і F можуть мати будь-який тип.
 Для перевірки наведіть курсор на trueCheck, falseCheck */
 
-type TMyIf<C extends true | false, T, F> = C extends true ? T : F
+type TMyIf<C extends boolean, T, F> = C extends true ? T : F
 
 const trueCheck: TMyIf<true, 'a', 'b'> = 'a' // очікується, що буде 'a'
 const falseCheck: TMyIf<false, 'a', 'b'> = 'b' // очікується, що буде 'b'

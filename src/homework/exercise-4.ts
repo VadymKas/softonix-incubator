@@ -20,29 +20,29 @@ interface IUser {
   name: string
 }
 
-type insertPlace = 'append' | 'prepend'
+type TInsertPlace = 'append' | 'prepend'
 
 class Collection<T> {
-  constructor(private elements: T[] = []) {
+  constructor (private elements: T[] = []) {
     this.elements = elements
   }
 
-  get(): T[] {
+  get (): T[] {
     return this.elements
   }
 
-  add(el: T, type: insertPlace = 'append'): void {
-    type === 'append' 
-      ? this.elements.push(el) 
+  add (el: T, type: TInsertPlace = 'append') {
+    type === 'append'
+      ? this.elements.push(el)
       : this.elements.unshift(el)
   }
 
-  contains(predicate: (el: T) => boolean): boolean {
+  contains (predicate: (el: T) => boolean) {
     return this.elements.some(predicate)
   }
 
-  delete(predicate: (el: T) => boolean): void {
-    this.elements = this.elements.filter(predicate)
+  delete (predicate: (el: T) => boolean) {
+    this.elements = this.elements.filter(el => el !== predicate(el))
   }
 }
 
