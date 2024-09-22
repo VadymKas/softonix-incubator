@@ -8,14 +8,18 @@
               ref="inputRef"
               v-model="localContact.name"
               type="text"
-              class="block font-medium w-full"
+              class="block font-medium w-full border-b border-transparent focus:border-b focus:border-b-blue-500"
             >
-            <input v-model="localContact.description" type="text" class="block mt-1 text-gray w-full">
+            <input
+              v-model="localContact.description"
+              type="text"
+              class="block mt-1 text-gray w-full border-b border-transparent focus:border-b focus:border-b-blue-500"
+            >
           </template>
 
           <template v-else>
-            <p class="font-medium">{{ contact.name }}</p>
-            <p class="text-gray mt-1 truncate">
+            <p class="font-medium border-b border-transparent truncate">{{ contact.name }}</p>
+            <p class="text-gray border-b border-transparent truncate mt-1">
               {{ contact.description }}
             </p>
           </template>
@@ -27,27 +31,36 @@
       </div>
       <div class="flex justify-end mt-2 gap-2">
         <template v-if="editMode">
-          <span
-            class="text-blue-500 font-medium text-xs cursor-pointer hover:underline"
+          <button
+            class="card__button text-blue-500"
             @click="editMode = false"
-          >Cancel</span>
+          >
+            Cancel
+          </button>
 
-          <span
-            class="text-blue-500 font-medium text-xs cursor-pointer hover:underline"
+          <button
+            class="card__button text-blue-500"
+            :disabled="!isValid"
             @click="onSave"
-          >Save</span>
+          >
+            Save
+          </button>
         </template>
 
         <template v-else>
-          <span
-            class="text-blue-500 font-medium text-xs cursor-pointer hover:underline"
+          <button
+            class="card__button text-blue-500"
             @click="triggerEditMode"
-          >Edit</span>
+          >
+            Edit
+          </button>
 
-          <span
-            class="text-red-500 font-medium text-xs cursor-pointer hover:underline"
+          <button
+            class="card__button text-red-500"
             @click="$emit('delete')"
-          >Delete</span>
+          >
+            Delete
+          </button>
         </template>
       </div>
     </div>
@@ -69,10 +82,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, nextTick } from 'vue'
+import { ref, nextTick, computed } from 'vue'
 import type { IContact } from '@/types'
 import IconEnvelope from '@/components/icons/IconEnvelope.vue'
 import IconPhone from '@/components/icons/IconPhone.vue'
+import { validateName, validateDescription } from '@/utils/validators'
 
 const props = defineProps<{
   contact: IContact
@@ -101,4 +115,11 @@ function onSave () {
   emit('save', localContact.value)
   editMode.value = false
 }
+
+const isValid = computed(() => {
+  const nameCheck = validateName(localContact.value.name)
+  const descriptionCheck = validateDescription(localContact.value.description)
+  console.log(!nameCheck && !descriptionCheck)
+  return (!nameCheck && !descriptionCheck)
+})
 </script>

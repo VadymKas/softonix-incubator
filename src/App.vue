@@ -1,16 +1,17 @@
 <template>
-  <div class="max-w-[1440px] p-6">
-    <h3 class="font-medium m-0">Contact list</h3>
-
+  <div class="max-w-[1440px] mx-auto p-6">
+    <h3 class="text-3xl font-medium mb-4">Contact list</h3>
+    <button class="button" @click="showFormHandler">Add contact</button>
     <div class="contact-list grid-cols-[repeat(auto-fill,_minmax(320px,_1fr))] grid gap-5 my-5">
       <ContactItem
         v-for="(contact, index) in contacts"
         :key="contact.id"
         :contact="contact"
-        @delete="deleteContact(index)"
+        @delete="confirmDeleteContact(index)"
         @save="onContactSave($event, index)"
       />
     </div>
+    <ContactForm v-if="activeForm" @trigger="showFormHandler()" @add="addContact" />
   </div>
 </template>
 
@@ -18,6 +19,9 @@
 import { ref } from 'vue'
 import type { IContact } from '@/types'
 import ContactItem from '@/components/ContactItem.vue'
+import ContactForm from './components/ContactForm.vue'
+
+const activeForm = ref(false)
 
 const contacts = ref<IContact[]>([
   {
@@ -47,4 +51,12 @@ function deleteContact (index: number) {
 function onContactSave (contact: IContact, index: number) {
   contacts.value[index] = { ...contact }
 }
+
+const showFormHandler = () => (activeForm.value = !activeForm.value)
+
+const addContact = (newContact: IContact) => contacts.value.unshift(newContact)
+
+const confirmDeleteContact = (index: number) => window.confirm('Are you sure you want to delete this contact?')
+  ? deleteContact(index)
+  : []
 </script>
