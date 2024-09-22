@@ -1,11 +1,11 @@
 const validationPatterns = {
   name: {
-    rule: /^(?=.*[A-Z])[A-Za-z ]{5,}$/,
+    rule: /^(?=.{5,}$)(?:(?:[A-ZА-ЯЁ][A-Za-zА-Яа-яЁ-ё]*)(?:\s[A-ZА-ЯЁ][A-Za-zА-Яа-яЁ-ё]*)*)$/,
     message: 'Name must be at least 5 characters long and include at least one uppercase letter'
   },
   description: {
-    rule: /^(?=(?:\S+\s+){1,}\S+).{20,}$/,
-    message: 'Description must be at least 20 characters long and contain at least two words'
+    rule: /^(?=.{20,}$)(?:(?:[A-ZА-ЯЁ][A-Za-zА-Яа-яЁ-ё-_]*)(?:\s[A-ZА-ЯЁ][A-Za-zА-Яа-яЁ-ё-_]*)*)$/,
+    message: 'Description must be at least 20 characters long and contain at least two words with uppercase letter'
   }
 }
 
@@ -17,7 +17,7 @@ const validationFunc = (validation: TValidation) => {
 
     switch (true) {
       case (!name):
-        return 'Name is required.'
+        return 'Field is required.'
       case (!validation.rule.test(name)):
         return validation.message
       default:

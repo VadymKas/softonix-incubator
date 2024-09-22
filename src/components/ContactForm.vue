@@ -23,7 +23,7 @@
         <input
           id="description"
           v-model="formData.description"
-          :class="{'input': !errorsData.name, 'input text-red-600': !!errorsData.name}"
+          :class="{'input': !errorsData.description, 'input text-red-600': !!errorsData.description}"
           type="text"
           placeholder="Enter your position"
         >
