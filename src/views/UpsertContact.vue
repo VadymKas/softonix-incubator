@@ -1,25 +1,53 @@
 <template>
   <div class="flex justify-center">
-    <Card :title="cardTitle" class="w-[350px]">
+    <Card
+      :title="cardTitle"
+      class="w-[350px]"
+    >
       <div class="space-y-4">
-        <AppInput v-model.trim="contactForm.name" placeholder="Name" />
+        <AppInput
+          v-model.trim="contactForm.name"
+          placeholder="Name"
+        />
 
-        <AppInput v-model.trim="contactForm.description" placeholder="Description" />
+        <AppInput
+          v-model.trim="contactForm.description"
+          placeholder="Description"
+        />
 
-        <AppInput v-model.trim="contactForm.image" placeholder="Image Link" />
+        <AppInput
+          v-model.trim="contactForm.image"
+          placeholder="Image Link"
+        />
+
+        <RolesSelect
+          v-model.trim="contactForm.roles"
+          :roles="contactsRoles"
+        />
       </div>
 
       <template #footer>
         <div class="px-6 pb-6 mt-2 flex gap-3">
-          <AppButton class="flex-auto" @click="$router.back">
+          <AppButton
+            class="flex-auto"
+            @click="$router.back"
+          >
             Cancel
           </AppButton>
 
-          <AppButton v-if="currentContact" class="flex-auto" @click="onDelete">
+          <AppButton
+            v-if="currentContact"
+            class="flex-auto"
+            @click="onDelete"
+          >
             Delete
           </AppButton>
 
-          <AppButton class="flex-auto" :disabled="!isFormValid" @click="onSave">
+          <AppButton
+            class="flex-auto"
+            :disabled="!isFormValid"
+            @click="onSave"
+          >
             <template #icon>
               <IconPlus class="w-5 h-5" />
             </template>
@@ -43,32 +71,44 @@ import AppInput from '@/components/AppInput.vue'
 import AppButton from '@/components/AppButton.vue'
 import IconPlus from '@/components/icons/IconPlus.vue'
 import Card from '@/components/Card.vue'
+import RolesSelect from '@/components/RolesSelect.vue'
 
 const router = useRouter()
 const route = useRoute()
 
 const contactsStore = useContactsStore()
 const { contacts } = storeToRefs(contactsStore)
-const { addContact, updateContact, deleteContact } = contactsStore
+const { contactsRoles, addContact, updateContact, deleteContact } =
+  contactsStore
 
-const currentContact = computed(() => contacts.value.find(c => c.id === +route.params.contactId))
+const currentContact = computed(() =>
+  contacts.value.find((c) => c.id === +route.params.contactId)
+)
 
 const cardTitle = computed(() => {
   return currentContact.value ? 'Edit Contact' : 'New Contact'
 })
 
-const contactForm = reactive<IContact>(currentContact.value
-  ? { ...currentContact.value }
-  : {
-    id: contacts.value.length + 1,
-    name: '',
-    description: '',
-    image: ''
-  })
+const contactForm = reactive<IContact>(
+  currentContact.value
+    ? { ...currentContact.value }
+    : {
+      id: contacts.value.length + 1,
+      name: '',
+      roles: [],
+      description: '',
+      image: ''
+    }
+)
 
 const isFormValid = computed(() => {
   const { image, ...contact } = contactForm
-  return Object.values(contact).every(c => !!c)
+  return Object.values(contact).every((c) => {
+    if (Array.isArray(c)) {
+      return !!c.length
+    }
+    return !!c
+  })
 })
 
 function onDelete () {
