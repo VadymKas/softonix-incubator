@@ -7,6 +7,7 @@ export const ComponentsBuilder = () => Components({
   dts: './dts/components.d.ts',
   dirs: [
     './src/components',
+    './src/layouts',
     ...buildViewsComponents()
   ]
 })
