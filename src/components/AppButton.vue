@@ -1,17 +1,14 @@
 <template>
-  <button
+  <el-button
     :disabled="disabled"
-    :class="[
-      'bg-blue-500 hover:bg-blue-700 disabled:bg-gray-medium disabled:cursor-not-allowed',
-      'text-white text-sm font-medium rounded p-2 inline-flex items-center justify-center'
-    ]"
+    class="inline-flex items-center justify-center"
   >
-    <div class="mr-2">
+    <div v-if="$slots.icon" class="mr-1">
       <slot name="icon" />
     </div>
 
     <slot />
-  </button>
+  </el-button>
 </template>
 
 <script lang="ts" setup>

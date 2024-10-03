@@ -1,18 +1,16 @@
 <template>
-  <input
-    type="text"
-    :placeholder="placeholder"
-    :value="modelValue"
-    class="rounded-md font-medium border border-gray-medium focus:border-gray-dark text-sm p-2 block w-full"
-    @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-  >
+  <el-form-item :label="label">
+    <el-input v-model="vModel" :type="type" :placeholder="placeholder" />
+  </el-form-item>
 </template>
 
 <script lang="ts" setup>
 defineProps<{
+  label?: string
+  type?: string
   placeholder?: string
-  modelValue?: string
+  prop?: string
 }>()
 
-defineEmits(['update:modelValue'])
+const vModel = defineModel<string>()
 </script>

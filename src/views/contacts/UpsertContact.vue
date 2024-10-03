@@ -1,35 +1,34 @@
 <template>
-  <div class="flex justify-center">
-    <Card :title="cardTitle" class="w-[350px]">
+  <el-card :body-style="{padding: 0}" class="w-fit flex justify-center m-auto">
+    <Card :title="cardTitle" class="w-[350px] p-0">
       <div class="space-y-4">
-        <AppInput v-model.trim="contactForm.name" placeholder="Name" />
+        <AppInput v-model="contactForm.name" placeholder="Name" />
 
-        <AppInput v-model.trim="contactForm.description" placeholder="Description" />
+        <AppInput v-model="contactForm.description" placeholder="Description" />
 
-        <AppInput v-model.trim="contactForm.image" placeholder="Image Link" />
+        <AppInput v-model="contactForm.image" placeholder="Image Link" />
       </div>
 
       <template #footer>
         <div class="px-6 pb-6 mt-2 flex gap-3">
-          <AppButton class="flex-auto" @click="$router.back">
+          <AppButton :type="$elComponentType.warning" class="flex-auto" @click="$router.go(-1)">
             Cancel
           </AppButton>
 
-          <AppButton v-if="currentContact" class="flex-auto" @click="onDelete">
+          <AppButton v-if="currentContact" :type="$elComponentType.danger" class="flex-auto" @click="onDelete">
             Delete
           </AppButton>
 
-          <AppButton class="flex-auto" :disabled="!isFormValid" @click="onSave">
+          <AppButton :type="$elComponentType.primary" class="flex-auto" :disabled="!isFormValid" @click="onSave">
             <template #icon>
               <IconPlus class="w-5 h-5" />
             </template>
-
             Save
           </AppButton>
         </div>
       </template>
     </Card>
-  </div>
+  </el-card>
 </template>
 
 <script lang="ts" setup>
