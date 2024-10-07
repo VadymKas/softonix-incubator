@@ -21,11 +21,16 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   res => res.data,
   error => {
-    console.log(error)
+    const { refreshToken, refresh, logout } = useAuthStore()
 
-    const { logout } = useAuthStore()
-    if (error.response.status === 401) {
-      logout()
+    console.error(error)
+
+    if (error.response.status === 401 && refreshToken) {
+      try {
+        refresh(refreshToken)
+      } catch {
+        logout()
+      }
     }
 
     return Promise.reject(error)

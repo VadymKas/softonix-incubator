@@ -7,21 +7,32 @@ export const useContactsStore = defineStore('contactsStore', () => {
     return contactsService.getContacts()
       .then(res => {
         contacts.value = res
+          .sort((a, b) => a.id - b.id)
       })
   }
 
   function addContact (contact: IContact) {
-    contacts.value.push(contact)
+    const { image, id, ...rest } = contact
+    return contactsService.createContact(rest)
+      .then(() => contacts.value.push(contact))
   }
 
   function updateContact (contact: IContact) {
-    const currentIndex = contacts.value.findIndex(c => c.id === contact.id)
-    contacts.value[currentIndex] = { ...contact }
+    // const currentIndex = contacts.value.findIndex(c => c.id === contact.id)
+    // contacts.value[currentIndex] = { ...contact }
+    contactsService.updateContact(contact)
+      .then(() => {
+        const currentIndex = contacts.value.findIndex(c => c.id === contact.id)
+        contacts.value[currentIndex] = { ...contact }
+      })
   }
 
   function deleteContact (contact: IContact) {
-    const currentIndex = contacts.value.findIndex(c => c.id === contact.id)
-    contacts.value.splice(currentIndex, 1)
+    return contactsService.deleteContact(contact)
+      .then(() => {
+        const currentIndex = contacts.value.findIndex(c => c.id === contact.id)
+        contacts.value.splice(currentIndex, 1)
+      })
   }
 
   return {
