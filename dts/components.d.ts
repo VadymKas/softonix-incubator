@@ -20,6 +20,8 @@ declare module 'vue' {
     IconEnvelope: typeof import('./../src/components/icons/IconEnvelope.vue')['default']
     IconPhone: typeof import('./../src/components/icons/IconPhone.vue')['default']
     IconPlus: typeof import('./../src/components/icons/IconPlus.vue')['default']
+    LazyImage: typeof import('../src/views/contacts/components/LazyImg.vue')['default']
+    LazyImg: typeof import('./../src/views/contacts/components/LazyImg.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }
